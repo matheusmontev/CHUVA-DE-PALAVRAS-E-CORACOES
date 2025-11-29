@@ -61,4 +61,4 @@ Abra o arquivo `style.css`. No início do arquivo, na seção `:root`, você pod
 *   **JavaScript (Vanilla):** Lógica de animação e manipulação do DOM sem bibliotecas pesadas.
 
 ---
-Feito com ❤️.
+Feito com ❤️ para a amada!
