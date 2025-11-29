@@ -1,0 +1,226 @@
+/* 
+ * ==========================================
+ * ARQUIVO DE ESTILOS (CSS)
+ * ==========================================
+ * Aqui definimos toda a aparência e as animações da página.
+ * Usamos Variáveis CSS (:root) para facilitar a personalização.
+ */
+
+:root {
+    /* --- CORES E TEMA --- */
+    --bg-gradient-start: #0f172a;
+    --bg-gradient-end: #312e81;
+    --bg-gradient-mid: #1e1b4b;
+    /* Nova cor para dar mais profundidade */
+
+    --text-color: #f8fafc;
+    /* Cor do texto principal*/
+    --accent-color: #ec4899;
+    /* Cor de destaque (rosa) para corações/palavras */
+    --glow-color: #f472b6;
+    /* Cor do brilho ao clicar */
+
+    /* --- TIPOGRAFIA --- */
+    --font-main: 'Outfit', sans-serif;
+    --font-handwriting: 'Pacifico', cursive;
+
+    /* --- CONFIGURAÇÕES DE ANIMAÇÃO --- */
+    --cursor-blink-speed: 0.8s;
+    /* Velocidade do cursor piscando */
+}
+
+/* ==========================================
+ * RESET E BASE
+ * ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end), var(--bg-gradient-start));
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-color);
+    font-family: var(--font-main);
+    overflow: hidden;
+    /* Impede barras de rolagem durante a chuva */
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* ==========================================
+ * TYPEWRITER (MÁQUINA DE ESCREVER)
+ * ========================================== */
+.container {
+    z-index: 10;
+    /* Garante que o texto fique acima da chuva se necessário */
+    text-align: center;
+    position: absolute;
+    padding: 2rem;
+    /* Margem interna maior para o efeito de vidro */
+
+    /* Efeito Glassmorphism */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.37);
+    max-width: 90%;
+}
+
+.typewriter-text {
+    font-family: var(--font-handwriting);
+    /* Fonte estilo manuscrita */
+    font-size: 1.5rem;
+    min-height: 4.5rem;
+    /* Reserva espaço para evitar pulos */
+    text-shadow: none;
+    line-height: 1.4;
+    /* Melhora leitura em múltiplas linhas */
+    white-space: pre-line;
+    /* Permite pular linha com \n ou Enter */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .typewriter-text {
+        font-size: 1.2rem;
+        /* Fonte menor em celulares */
+        min-height: auto;
+    }
+}
+
+/* Cursor piscante simulando digitação */
+.typewriter-text::after {
+    content: '|';
+    animation: blink var(--cursor-blink-speed) infinite;
+    opacity: 1;
+    margin-left: 5px;
+    color: var(--accent-color);
+}
+
+/* Classe para esconder o cursor quando terminar de digitar */
+.typewriter-text.typing-done::after {
+    display: none;
+}
+
+/* ==========================================
+ * CHUVA DE ELEMENTOS (RAIN)
+ * ========================================== */
+.rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Permite clicar através do container, mas os filhos terão pointer-events: auto */
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* WRAPPER: Controla a queda (posição) */
+.falling-wrapper {
+    position: absolute;
+    top: -50px;
+    /* Começa fora da tela */
+    cursor: pointer;
+    pointer-events: auto;
+    /* Permite interação */
+    will-change: transform;
+
+    /* Animação de queda */
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+/* ITEM: Controla a aparência (SEM ROTAÇÃO) */
+.falling-item {
+    color: var(--accent-color);
+    font-weight: bold;
+    user-select: none;
+    opacity: 0.9;
+    display: block;
+    /* Rotação removida */
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.falling-item.heart {
+    filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.5));
+    /* Animação de balanço (Sway) removida */
+}
+
+.falling-item.word {
+    font-family: var(--font-main);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+}
+
+/* ==========================================
+ * INTERATIVIDADE (CLIQUE / GLOW)
+ * ========================================== */
+.falling-item.glow {
+    /* Efeito de brilho intenso */
+    text-shadow: 0 0 20px var(--glow-color), 0 0 40px var(--accent-color);
+    transform: scale(1.3);
+    /* Sem rotação */
+    z-index: 100;
+}
+
+/* ==========================================
+ * KEYFRAMES (ANIMAÇÕES)
+ * ========================================== */
+
+/* Cursor piscando */
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Queda dos itens (Aplica no Wrapper) */
+@keyframes fall {
+    0% {
+        transform: translateY(-50px) translateX(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) translateX(20px);
+        opacity: 0.8;
+    }
+}
+
+/* Animação do Background */
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
